@@ -7,41 +7,34 @@ class Note extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { x: 20, y: 20 };
-
     this.onStart = this.onStart.bind(this);
     this.onDrag = this.onDrag.bind(this);
     this.onStop = this.onStop.bind(this);
   }
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["onStart", "onDrag", "onStop"] }] */
   onStart() {
-    console.log('onStartDrag');
+    this.props.onStartUpdate();
   }
 
   onDrag(e, ui) {
-    console.log('onDrag');
-    // console.log(ui.x);
-    // console.log(ui.y);
-
-    this.setState({
-      x: ui.x,
-      y: ui.y,
-    });
+    this.props.onDragUpdate(e, ui, this.props.id);
   }
 
   onStop() {
-    console.log('onStopDrag');
+    this.props.onStopUpdate();
   }
 
   render() {
+    console.log(this.props.note.x);
+    console.log(this.props.note.y);
+
     return (
       <Draggable
         handle=".note-mover"
         grid={[25, 25]}
         bounds="body"
-        defaultPosition={{ x: 200, y: 200 }}
-        position={{ x: this.state.x, y: this.state.y }} // {{ x: props.note.x, y: props.note.y }}
+        defaultPosition={{ x: this.props.note.x, y: this.props.note.y }}
+        position={{ x: this.props.note.x, y: this.props.note.y }}
         onStart={this.onStart}
         onDrag={this.onDrag}
         onStop={this.onStop}

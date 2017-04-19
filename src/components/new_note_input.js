@@ -21,6 +21,7 @@ class NewNoteInput extends Component {
   }
 
   render() {
+    console.log('new note render start');
     return (
       <div>
         <p>State: {this.state.newtitle} </p>
