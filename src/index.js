@@ -16,32 +16,33 @@ class App extends Component {
     };
 
     this.onDragUpdate = this.onDragUpdate.bind(this);
+    this.startEdit = this.startEdit.bind(this);
+    this.endEdit = this.endEdit.bind(this);
   }
-
 
   /* eslint class-methods-use-this: ["error", { "exceptMethods": ["onStartUpdate", "onDragUpdate", "onStopUpdate"] }] */
   onStartUpdate() {
-    console.log('onStartDrag- index');
+    // console.log('onStartDrag- index');
   }
 
-  onDragUpdate(e, ui, id) {
-    console.log('onDrag- index');
-    // console.log(ui);
-    // console.log(id);
+  onDragUpdate(id, newX, newY) {
+    // console.log('onDrag- index');
+    // console.log(newX);
+    // console.log(newY);
     const fields = {
-      x: ui.x,
-      y: ui.y,
+      x: newX,
+      y: newY,
     };
 
-    console.log(fields);
-    this.setState({ // From assingment page
+    // console.log(fields);
+    this.setState({ // From assignment page
       notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
     });
-    console.log(this.state.notes);
+    // console.log(this.state.notes);
   }
 
   onStopUpdate() {
-    console.log('onStopDrag- index');
+    // console.log('onStopDrag- index');
   }
 
   createNote(newtitle) {
@@ -51,10 +52,11 @@ class App extends Component {
     this.setState({
       notes: this.state.notes.set(count, {
         title: newtitle,
-        text: 'I is a note',
+        text: '# large ',
         x: 20,
         y: 20,
         zIndex: 26,
+        isEditing: false,
       }),
     });
     count += 1;
@@ -66,15 +68,31 @@ class App extends Component {
     });
   }
 
+  startEdit(id) {
+    const fields = { isEditing: true };
+
+    this.setState({
+      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
+    });
+  }
+
+  endEdit(id) {
+    const fields = { isEditing: false };
+
+    this.setState({
+      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
+    });
+  }
+
 
   render() {
     // Based on: https://github.com/mzabriskie/react-draggable/blob/master/example/example.js
     const dragHandlers = { onStartUpdate: this.onStartUpdate, onDragUpdate: this.onDragUpdate, onStopUpdate: this.onStopUpdate };
-
+    const editHandlers = { startEdit: this.startEdit, endEdit: this.endEdit };
     let notesRend;
     if (this.state.notes.size > 0) {
       notesRend = this.state.notes.entrySeq().map(([id, note]) => {
-        return <Note key={id} id={id} note={note} onDelete={() => this.deleteNote(id)} {...dragHandlers} />;
+        return <Note key={id} id={id} note={note} onDelete={() => this.deleteNote(id)} {...editHandlers} {...dragHandlers} />;
       });
     } else {
       notesRend = '';

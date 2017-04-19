@@ -9,24 +9,12 @@ body, html {
   margin: 0;
 }
 
-
-.heading {
-  margin-left: 2px;
-  margin-bottom: 3px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+i {
+  margin-right: 5px;
 }
-  .heading p {
-    margin: 0px;
+  i:hover {
+    cursor: pointer;
   }
-
-.note {
-  background: #FFF;
-  display: inline-block;
-  border-style: solid;
-  border-color: gray;
-}
 
 textarea {
   width: 93%;
@@ -34,10 +22,42 @@ textarea {
   margin-right: 2%;
 }
 
-
-i {
-  margin-right: 5px;
+.heading {
+  margin-left: 2px;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }
-  i:hover {
-    cursor: pointer;
+  .heading p {
+    margin: 0px;
+    margin-right: 10px;
   }
+
+.main-react {
+  height: 100%;
+  // display: flex;
+  // flex-direction: column;
+}
+
+.note {
+  background: #FFF;
+  display: inline-block;
+  border-style: solid;
+  border-color: gray;
+  max-width: 600px;
+}
+  .note p {
+    max-width: 90%;
+    word-wrap: break-word;
+  }
+
+.note-section {
+  flex-grow: 1;
+}
+
+#main {
+  top: 0;
+  height: 100%;
+}
