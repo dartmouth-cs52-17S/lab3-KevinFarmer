@@ -16,7 +16,6 @@ class App extends Component {
     };
   }
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["createNote"] }] */
   createNote(newtitle) {
     console.log('New note');
     console.log(newtitle);

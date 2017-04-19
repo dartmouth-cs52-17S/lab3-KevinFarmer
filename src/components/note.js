@@ -1,53 +1,65 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Draggable from 'react-draggable';
 import Textarea from 'react-textarea-autosize';
 
 /* eslint react/self-closing-comp: 0 */
-const Note = (props) => {
-  const onStartDrag = () => {
+class Note extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { x: 20, y: 20 };
+
+    this.onStart = this.onStart.bind(this);
+    this.onDrag = this.onDrag.bind(this);
+    this.onStop = this.onStop.bind(this);
+  }
+
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["onStart", "onDrag", "onStop"] }] */
+  onStart() {
     console.log('onStartDrag');
-    const x = 0;
-    const y = 1;
-    return props.updatePos(x, y);
-  };
+  }
 
-  const onDrag = () => {
+  onDrag(e, ui) {
     console.log('onDrag');
-    const x = 0;
-    const y = 1;
-    return props.updatePos(x, y);
-  };
+    // console.log(ui.x);
+    // console.log(ui.y);
 
-  const onStopDrag = () => {
+    this.setState({
+      x: ui.x,
+      y: ui.y,
+    });
+  }
+
+  onStop() {
     console.log('onStopDrag');
-    const x = 0;
-    const y = 1;
-    return props.updatePos(x, y);
-  };
+  }
 
-  return (
-    <Draggable
-      handle=".note-mover"
-      grid={[25, 25]}
-      defaultPosition={{ x: 20, y: 20 }}
-      position={{ x: props.note.x, y: props.note.y }}
-      onStart={onStartDrag}
-      onDrag={onDrag}
-      onStop={onStopDrag}
-    >
-      <div className="note">
-        <div className="heading">
-          <p>{props.note.title}</p>
-          <div>
-            <i onClick={props.onDelete} className="fa fa-trash-o" aria-hidden="true"></i>
-            <i className="fa fa-pencil" aria-hidden="true"></i>
-            <i className="fa fa-arrows" aria-hidden="true"></i>
+  render() {
+    return (
+      <Draggable
+        handle=".note-mover"
+        grid={[25, 25]}
+        bounds="body"
+        defaultPosition={{ x: 200, y: 200 }}
+        position={{ x: this.state.x, y: this.state.y }} // {{ x: props.note.x, y: props.note.y }}
+        onStart={this.onStart}
+        onDrag={this.onDrag}
+        onStop={this.onStop}
+      >
+        <div className="note">
+          <div className="heading">
+            <p>{this.props.note.title}</p>
+            <div>
+              <i onClick={this.props.onDelete} className="fa fa-trash-o" aria-hidden="true"></i>
+              <i className="fa fa-pencil" aria-hidden="true"></i>
+              <i className="fa fa-arrows note-mover" aria-hidden="true"></i>
+            </div>
           </div>
+          <Textarea value={this.props.note.text}></Textarea>
         </div>
-        <Textarea value={props.note.text}></Textarea>
-      </div>
-    </Draggable>
-  );
-};
+      </Draggable>
+    );
+  }
+}
 
 export default Note;
