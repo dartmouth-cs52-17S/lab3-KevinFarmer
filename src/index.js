@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
-// import * as firebasedb from './firebasedb';
+import * as firebasedb from './firebasedb';
 import NewNoteInput from './components/new_note_input';
 import Note from './components/note';
 import './style.scss';
 
-let noteCount = 0;
-let maxZ = 1;
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["createNote", "deleteNote"] }] */
 
 class App extends Component {
   constructor(props) {
@@ -15,8 +14,10 @@ class App extends Component {
 
     this.state = {
       notes: Immutable.Map(),
+      maxZ: 1,
     };
 
+    this.onStartUpdate = this.onStartUpdate.bind(this);
     this.onDragUpdate = this.onDragUpdate.bind(this);
     this.startEdit = this.startEdit.bind(this);
     this.endEdit = this.endEdit.bind(this);
@@ -24,87 +25,79 @@ class App extends Component {
     this.onTextChange = this.onTextChange.bind(this);
   }
 
-  /* eslint class-methods-use-this: ["error", { "exceptMethods": ["onStartUpdate", "onDragUpdate", "onStopUpdate"] }] */
-  onStartUpdate() {
-    // console.log('onStartDrag- index');
+  componentDidMount() {
+    firebasedb.fetchNotes((notes) => {
+      this.setState({ notes: Immutable.Map(notes) });
+    });
+    firebasedb.fetchZ((z) => {
+      this.setState({ maxZ: z });
+    });
+  }
+
+  onStartUpdate(id, note) {
+    if (note.zIndex !== (this.state.maxZ - 1)) {
+      const fields = { zIndex: this.state.maxZ };
+      firebasedb.updateMaxZ(this.state.maxZ + 1);
+      const newNote = Object.assign({}, this.state.notes.id, fields);
+      firebasedb.updateNote(id, newNote);
+    }
   }
 
   onDragUpdate(id, newX, newY) {
-    // console.log('onDrag- index');
-    // console.log(newX);
-    // console.log(newY);
     const fields = {
       x: newX,
       y: newY,
     };
-
-    // console.log(fields);
-    this.setState({ // From assignment page
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
-    // console.log(this.state.notes);
-  }
-
-  onStopUpdate() {
-    // console.log('onStopDrag- index');
+    const newNote = Object.assign({}, this.state.notes.id, fields);
+    firebasedb.updateNote(id, newNote);
   }
 
   onTitleChange(id, value) {
     const fields = { title: value };
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
+    const newNote = Object.assign({}, this.state.notes.id, fields);
+    firebasedb.updateNote(id, newNote);
   }
 
   onTextChange(id, value) {
     const fields = { text: value };
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
+    const newNote = Object.assign({}, this.state.notes.id, fields);
+    firebasedb.updateNote(id, newNote);
   }
 
   startEdit(id) {
     const fields = { isEditing: true };
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
+    const newNote = Object.assign({}, this.state.notes.id, fields);
+    firebasedb.updateNote(id, newNote);
   }
 
   endEdit(id) {
     const fields = { isEditing: false };
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
+    const newNote = Object.assign({}, this.state.notes.id, fields);
+    firebasedb.updateNote(id, newNote);
   }
 
   createNote(newtitle) {
-    console.log('New note');
-    console.log(newtitle);
-
-    this.setState({
-      notes: this.state.notes.set(noteCount, {
-        title: newtitle,
-        text: '# large ',
-        x: 20,
-        y: 20,
-        zIndex: maxZ,
-        isEditing: false,
-      }),
-    });
-    noteCount += 1;
-    maxZ += 1;
+    const newNote = {
+      title: newtitle,
+      text: '# large ',
+      x: 20,
+      y: 20,
+      zIndex: this.state.maxZ,
+      isEditing: false,
+    };
+    firebasedb.updateMaxZ(this.state.maxZ + 1);
+    firebasedb.createNote(newNote);
   }
 
   deleteNote(id) {
-    this.setState({
-      notes: this.state.notes.delete(id),
-    });
+    firebasedb.deleteNote(id);
   }
 
   render() {
     // Based on: https://github.com/mzabriskie/react-draggable/blob/master/example/example.js
-    const dragHandlers = { onStartUpdate: this.onStartUpdate, onDragUpdate: this.onDragUpdate, onStopUpdate: this.onStopUpdate };
+    const dragHandlers = { onStartUpdate: this.onStartUpdate, onDragUpdate: this.onDragUpdate };
     const editHandlers = { startEdit: this.startEdit, endEdit: this.endEdit, onTitleChange: this.onTitleChange, onTextChange: this.onTextChange };
+
     let notesRend;
     if (this.state.notes.size > 0) {
       notesRend = this.state.notes.entrySeq().map(([id, note]) => {
