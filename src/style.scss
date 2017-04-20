@@ -42,20 +42,33 @@ textarea {
 }
 
 .note {
+  position: absolute;
   background: #FFF;
   display: inline-block;
   border-style: solid;
   border-color: gray;
-  max-width: 600px;
+  max-width: 80%;
+  min-width: 160px;
+  min-height: 200px;
 }
   .note p {
-    max-width: 90%;
+    max-width: 95%;
     word-wrap: break-word;
   }
 
 .note-section {
   flex-grow: 1;
 }
+
+.note-text {
+  max-width: 100%;
+}
+  .note-text * {
+    max-width: 90%;
+    // word-wrap: break-word;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
 #main {
   top: 0;
