@@ -29,7 +29,7 @@ class Note extends Component {
 
   onDrag(e, ui) {
     const newX = Math.max(3, ui.x);
-    const newY = Math.max(-70, ui.y);
+    const newY = Math.max(0, ui.y);
     this.props.onDragUpdate(this.props.id, newX, newY);
   }
 

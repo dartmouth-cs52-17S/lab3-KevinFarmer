@@ -48,6 +48,10 @@ module.exports = {
         exclude: /node_modules/,
         use: ['babel-loader', 'eslint-loader'],
       },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader',
+      },
     ],
   },
   plugins: [

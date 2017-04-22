@@ -22,11 +22,10 @@ class NewNoteInput extends Component {
 
   render() {
     return (
-      <div>
-        <p>State: {this.state.newtitle} </p>
-        <form onSubmit={this.onSubmit} onChange={this.onInputChange}>
-          <input type="text" name="title" placeholder="new note title" value={this.state.newtitle} />
-          <input type="submit" value="Submit" />
+      <div className="new-note-container">
+        <form className="new-note-input" onSubmit={this.onSubmit} onChange={this.onInputChange}>
+          <input type="text" name="title" placeholder="new note title" value={this.state.newtitle} autoComplete="off" />
+          <input className="button" type="submit" value="Create Note" />
         </form>
       </div>
     );

@@ -80,8 +80,8 @@ class App extends Component {
     const newNote = {
       title: newtitle,
       text: '# large ',
-      x: 20,
-      y: 20,
+      x: 178,
+      y: 0,
       zIndex: this.state.maxZ,
       isEditing: false,
     };
@@ -108,8 +108,11 @@ class App extends Component {
     }
 
     return (
-      <div>
-        <NewNoteInput onSubmission={title => this.createNote(title)} />
+      <div className="react-data">
+        <header>
+          <h1>My Notes</h1>
+          <NewNoteInput onSubmission={title => this.createNote(title)} />
+        </header>
         {notesRend}
       </div>
     );
