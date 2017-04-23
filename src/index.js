@@ -6,7 +6,7 @@ import NewNoteInput from './components/new_note_input';
 import Note from './components/note';
 import './style.scss';
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["createNote", "deleteNote"] }] */
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["deleteNote"] }] */
 
 class App extends Component {
   constructor(props) {
