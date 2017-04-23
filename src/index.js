@@ -79,7 +79,7 @@ class App extends Component {
   createNote(newtitle) {
     const newNote = {
       title: newtitle,
-      text: '# large ',
+      text: '',
       x: 178,
       y: 0,
       zIndex: this.state.maxZ,

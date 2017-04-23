@@ -38,7 +38,7 @@ class Note extends Component {
     this.props.onDelete();
   }
 
-/* eslint jsx-a11y/no-static-element-interactions: 0 */
+  /* eslint jsx-a11y/no-static-element-interactions: 0 */
   renderNoteContent() {
     if (this.props.note.isEditing) {
       return (
@@ -59,7 +59,7 @@ class Note extends Component {
       return (
         <div className="note" onClick={this.onStart} style={{ zIndex: this.props.note.zIndex }}>
           <div className="heading">
-            <p>{this.props.note.title}</p>
+            <h3>{this.props.note.title}</h3>
             <div>
               <i onClick={this.onDelete} className="fa fa-trash-o" aria-hidden="true" />
               <i onClick={() => this.props.startEdit(this.props.id)} className="fa fa-pencil" aria-hidden="true" />
