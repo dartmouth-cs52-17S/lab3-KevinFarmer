@@ -3,7 +3,6 @@ import Draggable from 'react-draggable';
 import Textarea from 'react-textarea-autosize';
 import marked from 'marked';
 
-/* eslint react/no-danger: 0 */
 class Note extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +37,7 @@ class Note extends Component {
     this.props.onDelete();
   }
 
+  /* eslint react/no-danger: 0 */
   /* eslint jsx-a11y/no-static-element-interactions: 0 */
   renderNoteContent() {
     if (this.props.note.isEditing) {

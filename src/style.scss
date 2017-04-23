@@ -52,7 +52,6 @@ textarea {
   }
 
 .heading {
-
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(100, 100, 100, 0.8);
   display: flex;
@@ -85,12 +84,12 @@ textarea {
 
 .note {
   box-shadow: 0 3px 10px rgba(0,0,0,.5);
-  position: absolute;
+  position: fixed;
   background: #FFF300;
   display: inline-block;
   border: 1px solid gray;
   border-radius: 5px;
-  max-width: 80%;
+  max-width: 400px;
   min-width: 200px;
   min-height: 250px;
 }
@@ -100,9 +99,8 @@ textarea {
 }
 
 .note-text {
-  max-width: 94%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 94%;
+  margin-left: 3%;
 }
   .note-text img {
     max-width: 100%;
